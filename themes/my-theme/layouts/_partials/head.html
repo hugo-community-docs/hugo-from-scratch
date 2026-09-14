@@ -1,0 +1,27 @@
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>
+		{{ site.Title }}
+	</title>
+	{{ $buildOpts := dict
+		"minify" (hugo.IsProduction)
+		"target" (slice "chrome121" "firefox122" "safari17.3")
+	}}
+
+	{{- with resources.Get "css/main.css" | resources.ExecuteAsTemplate "css/main-bundle.css" . -}}
+		{{- with . | css.Build $buildOpts -}}
+			{{- if hugo.IsDevelopment -}}
+				<link rel="stylesheet" href="{{ .RelPermalink }}">
+			{{- else -}}
+				{{- with . | fingerprint -}}
+					<link
+						rel="stylesheet"
+						href="{{ .RelPermalink }}"
+						integrity="{{ .Data.Integrity }}"
+						crossorigin="anonymous">
+				{{- end -}}
+			{{- end -}}
+		{{- end -}}
+	{{- end -}}
+</head>

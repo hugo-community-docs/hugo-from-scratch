@@ -1,0 +1,35 @@
+baseURL: https://example.org/
+locale: en-US
+title: My New Hugo Project
+theme: ["my-theme"]
+
+menu:
+  main:
+    - name: Blog
+      pageRef: /blog
+      weight: 10
+    - name: Tags
+      pageRef: /tags
+      weight: 20
+
+markup:
+  highlight:
+    noClasses: false
+
+  tableOfContents:
+    startLevel: 2
+    endLevel: 4
+
+  goldmark:
+    parser:
+      wrapStandAloneImageWithinParagraph: false
+      attribute:
+        block: true
+    renderer:
+      unsafe: true
+    renderHooks:
+      link:
+        useEmbedded: always
+
+params:
+  fontSerif: false  # see main.css

@@ -1,0 +1,16 @@
+:root {
+	--measure: 640px;
+	--color-bg: oklch(0.99 0.003 84);
+	--color-text: oklch(0.23 0.005 67);
+	--color-muted: oklch(0.45 0.01 67);
+	--color-border: oklch(0.92 0.007 80);
+	--color-link: oklch(0.23 0.005 67);
+	--font-serif: 'PingFang TC', 'Microsoft JhengHei', Georgia, serif;
+	--space-1: 0.5rem;
+	--space-2: 1rem;
+	--space-3: 1.75rem;
+	--space-4: 3rem;
+	--space-5: 5rem;
+	--text-1: 0.85rem;
+	--text-2: 0.95rem;
+}

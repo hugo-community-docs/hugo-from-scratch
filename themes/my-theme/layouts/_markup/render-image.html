@@ -1,0 +1,65 @@
+{{- $u := urls.Parse .Destination -}}
+{{- $src := $u.String -}}
+{{- $image := "" -}}
+
+{{- if not $u.IsAbs -}}
+  {{- $path := strings.TrimPrefix "./" $u.Path -}}
+  {{- with or (.PageInner.Resources.Get $path) (resources.Get $path) -}}
+    {{- $image = . -}}
+    {{- $src = .RelPermalink -}}
+    {{- with $u.RawQuery -}}
+      {{- $src = printf "%s?%s" $src . -}}
+    {{- end -}}
+    {{- with $u.Fragment -}}
+      {{- $src = printf "%s#%s" $src . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $canProcess := false -}}
+{{- if and $image (eq $image.MediaType.MainType "image") (in (slice "image/jpeg" "image/png") $image.MediaType.Type) -}}
+  {{- $canProcess = true -}}
+{{- end -}}
+
+{{- $width := "" -}}
+{{- $height := "" -}}
+{{- $srcset := "" -}}
+{{- $sizes := "" -}}
+
+{{- if $canProcess -}}
+  {{- $width = $image.Width -}}
+  {{- $height = $image.Height -}}
+
+  {{- $candidateWidths := slice 480 768 1024 1536 2048 -}}
+  {{- $set := slice -}}
+
+  {{- range $candidateWidths -}}
+    {{- if lt . $image.Width -}}
+      {{- $resized := $image.Resize (printf "%dx webp" .) -}}
+      {{- $set = $set | append (printf "%s %dw" $resized.RelPermalink .) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $origWebp := $image.Resize (printf "%dx webp" $image.Width) -}}
+  {{- $set = $set | append (printf "%s %dw" $origWebp.RelPermalink $image.Width) -}}
+  {{- $src = $origWebp.RelPermalink -}}
+
+  {{- $srcset = delimit $set ", " -}}
+  {{- if gt (len $set) 1 -}}
+    {{- $sizes = "(min-width: 1024px) 1024px, 100vw" -}}
+  {{- end -}}
+{{- end -}}
+
+<img src="{{ $src }}" alt="{{ .PlainText }}"
+  {{- with .Title }} title="{{ . }}"{{ end -}}
+  {{- with $srcset }} srcset="{{ . }}"{{ end -}}
+  {{- with $sizes }} sizes="{{ . }}"{{ end -}}
+  {{- with $width }} width="{{ . }}"{{ end -}}
+  {{- with $height }} height="{{ . }}"{{ end -}}
+  loading="lazy" decoding="async"
+  {{- range $k, $v := .Attributes -}}
+    {{- if $v -}}
+    {{- printf " %s=%q" $k ($v | transform.HTMLEscape) | safeHTMLAttr -}}
+    {{- end -}}
+  {{- end -}}>
+{{- /* chomp trailing newline */ -}}

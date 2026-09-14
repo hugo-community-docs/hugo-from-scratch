@@ -1,0 +1,16 @@
+{{ define "main" }}
+
+<main>
+  <h1 class="page-title">Posts tagged with {{ .Title }}</h1>
+  {{ with .Content }}<article class="prose">{{ . }}</article>{{ end }}
+
+  <ul class="post-list">
+	  {{ range .Pages.ByDate.Reverse }}
+      <li>
+        <a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a>
+      </li>
+    {{ end }}
+  </ul>
+</main>
+
+{{ end }}

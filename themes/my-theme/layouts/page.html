@@ -1,0 +1,19 @@
+{{ define "main" }}
+
+<main>
+  <article>
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{ .Content }}
+  </article>
+	{{- with .GetTerms "tags" -}}
+		<div>
+			{{- range . -}}
+				<a href="{{ .RelPermalink }}">
+					#{{- .LinkTitle -}}
+				</a>&ensp;
+			{{- end -}}
+		</div>
+	{{- end -}}
+</main>
+
+{{ end }}
