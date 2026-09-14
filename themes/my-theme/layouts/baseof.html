@@ -1,3 +1,7 @@
+{{- $minHugoVersion := "0.158.0" -}}
+{{- if lt hugo.Version $minHugoVersion -}}
+	{{- errorf "Please upgrade Hugo to v%s or later." $minHugoVersion -}}
+{{- end -}}
 <!doctype html>
 <html lang="{{ .Site.Language.Locale }}">
 	{{ partial "head.html" . }}
