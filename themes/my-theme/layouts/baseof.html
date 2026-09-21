@@ -5,9 +5,10 @@
 <!doctype html>
 <html lang="{{ .Site.Language.Locale }}">
 	{{ partial "head.html" . }}
-  <body>
+	<body>
 		{{ partial "header.html" . }}
-    {{ block "main" . }}{{ end }}
+		{{ block "main" . }}{{ end }}
 		{{ partial "footer.html" . }}
-  </body>
+		{{ partial "components/scroll-to-top.html" . }}
+	</body>
 </html>

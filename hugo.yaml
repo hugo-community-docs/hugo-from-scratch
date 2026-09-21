@@ -32,4 +32,4 @@ markup:
         useEmbedded: always
 
 params:
-  fontSerif: false  # see main.css
+  scrollToTop: true  # see main.css and main.js in themes/my-theme/assets/my-theme/core

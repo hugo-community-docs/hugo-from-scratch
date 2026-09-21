@@ -1,0 +1,6 @@
+@import "./tokens.css" layer(base);
+@import "./layout.css" layer(base);
+
+{{ if site.Params.scrollToTop }}
+@import "../components/scroll-to-top/scroll-to-top.css";
+{{ end }}

@@ -1,7 +1,0 @@
-@import "./tokens.css" layer(base);
-@import "./layout.css" layer(base);
-
-
-{{ if site.Params.fontSerif }}
-@import "./serif.css";
-{{ end }}

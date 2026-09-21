@@ -4,24 +4,30 @@
 	<title>
 		{{ site.Title }}
 	</title>
-	{{ $buildOpts := dict
-		"minify" (hugo.IsProduction)
-		"target" (slice "chrome121" "firefox122" "safari17.3")
-	}}
 
-	{{- with resources.Get "css/main.css" | resources.ExecuteAsTemplate "css/main-bundle.css" . -}}
-		{{- with . | css.Build $buildOpts -}}
-			{{- if hugo.IsDevelopment -}}
-				<link rel="stylesheet" href="{{ .RelPermalink }}">
-			{{- else -}}
-				{{- with . | fingerprint -}}
-					<link
-						rel="stylesheet"
-						href="{{ .RelPermalink }}"
-						integrity="{{ .Data.Integrity }}"
-						crossorigin="anonymous">
-				{{- end -}}
+	{{- with resources.Get "my-theme/core/main.css" -}}
+		{{- with resources.ExecuteAsTemplate "main-bundle.css" $ . -}}
+			{{- $opts := dict "minify" (hugo.IsProduction) -}}
+			{{- $css := . | css.Build $opts -}}
+			{{- if hugo.IsProduction -}}
+				{{- $css = $css | fingerprint -}}
 			{{- end -}}
+
+			{{- /* Empty integrity is safely ignored by browsers. */ -}}
+			<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
+		{{- end -}}
+	{{- end -}}
+
+	{{- with resources.Get "my-theme/core/main.js" -}}
+		{{- with resources.ExecuteAsTemplate "main-bundle.js" $ . -}}
+			{{- $opts := dict "format" "esm" "minify" (hugo.IsProduction) -}}
+			{{- $js := . | js.Build $opts -}}
+			{{- if hugo.IsProduction -}}
+				{{- $js = $js | fingerprint -}}
+			{{- end -}}
+
+			{{- /* Empty integrity is safely ignored by browsers. */ -}}
+			<script type="module" src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
 		{{- end -}}
 	{{- end -}}
 </head>
