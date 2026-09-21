@@ -1,6 +1,6 @@
 ---
 title: 'Post: p2, Motorcycle Tour'
-linkTitle: 'Motorcycle Tour'
+linkTitle: 'p2: Motorcycle Tour'
 date: '2026-08-16T04:33:19+08:00'
 tags: ['motorcycle', 'tour']
 ---

@@ -5,7 +5,7 @@
   {{ with .Content }}<article class="intro prose">{{ . }}</article>{{ end }}
 
   <ul>
-    {{ range .Pages.ByDate.Reverse }}
+    {{ range .Pages.ByDate }}
     <li>
       <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
     </li>
